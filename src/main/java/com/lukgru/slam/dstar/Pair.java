@@ -15,23 +15,22 @@ package com.lukgru.slam.dstar;
  * Instances of this class are immutable, but the provided values might not be.
  * This means the consistency of equality checks and the hash code is only as
  * strong as that of the value types.<p>
- *
+ * <p>
  * * @author daniel beard
  * http://danielbeard.io
  * http://github.com/daniel-beard
- *
+ * <p>
  * Copyright (C) 2012 Daniel Beard
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), 
- * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * <p>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+ * <p>
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
  * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- * 
  */
 public class Pair<T, U> implements Cloneable, java.io.Serializable {
 
@@ -56,7 +55,6 @@ public class Pair<T, U> implements Cloneable, java.io.Serializable {
      * @param object2 U to serve as the other value.
      */
     public Pair(T object1, U object2) {
-
         this.object1 = object1;
         this.object2 = object2;
         object1Null = object1 == null;
@@ -71,9 +69,7 @@ public class Pair<T, U> implements Cloneable, java.io.Serializable {
      * @return a value of this Pair.
      */
     public T first() {
-
         return object1;
-
     }
 
     /**
@@ -82,31 +78,26 @@ public class Pair<T, U> implements Cloneable, java.io.Serializable {
      * @return a value of this Pair.
      */
     public U second() {
-
         return object2;
-
     }
 
     /*
      * Sets the value of the first Pair
      */
-    public void setFirst(T object1)
-	{
-	   this.object1 = object1;
-	   object1Null = object1 == null;
-	   dualNull = object1Null && object2Null;
+    public void setFirst(T object1) {
+        this.object1 = object1;
+        object1Null = object1 == null;
+        dualNull = object1Null && object2Null;
     }
 
-	/*
-	 * Sets the value of the second pair
-	 */
-	public void setSecond(U object2)
-	{
-		this.object2 = object2;
-		object2Null = object2 == null;
-		dualNull = object1Null && object2Null;
-	}
-
+    /*
+     * Sets the value of the second pair
+     */
+    public void setSecond(U object2) {
+        this.object2 = object2;
+        object2Null = object2 == null;
+        dualNull = object1Null && object2Null;
+    }
 
     /**
      * Returns a shallow copy of this Pair. The returned Pair is a new instance
@@ -117,9 +108,7 @@ public class Pair<T, U> implements Cloneable, java.io.Serializable {
      */
     @Override
     public Pair<T, U> clone() {
-
-        return new Pair<T, U>(object1, object2);
-
+        return new Pair<>(object1, object2);
     }
 
     /**
@@ -159,47 +148,47 @@ public class Pair<T, U> implements Cloneable, java.io.Serializable {
     @Override
     public boolean equals(Object obj) {
 
-        if(obj == null)
+        if (obj == null)
             return false;
 
-        if(this == obj)
+        if (this == obj)
             return true;
 
-        if(!(obj instanceof Pair<?, ?>))
+        if (!(obj instanceof Pair<?, ?>))
             return false;
 
-        final Pair<?, ?> otherPair = (Pair<?, ?>)obj;
+        final Pair<?, ?> otherPair = (Pair<?, ?>) obj;
 
-        if(dualNull)
+        if (dualNull)
             return otherPair.dualNull;
 
         //After this we're sure at least one part in this is not null
 
-        if(otherPair.dualNull)
+        if (otherPair.dualNull)
             return false;
 
         //After this we're sure at least one part in obj is not null
 
-        if(object1Null) {
-            if(otherPair.object1Null) //Yes: this and other both have non-null part2
+        if (object1Null) {
+            if (otherPair.object1Null) //Yes: this and other both have non-null part2
                 return object2.equals(otherPair.object2);
-            else if(otherPair.object2Null) //Yes: this has non-null part2, other has non-null part1
+            else if (otherPair.object2Null) //Yes: this has non-null part2, other has non-null part1
                 return object2.equals(otherPair.object1);
             else //Remaining case: other has no non-null parts
                 return false;
-        } else if(object2Null) {
-            if(otherPair.object2Null) //Yes: this and other both have non-null part1
+        } else if (object2Null) {
+            if (otherPair.object2Null) //Yes: this and other both have non-null part1
                 return object1.equals(otherPair.object1);
-            else if(otherPair.object1Null) //Yes: this has non-null part1, other has non-null part2
+            else if (otherPair.object1Null) //Yes: this has non-null part1, other has non-null part2
                 return object1.equals(otherPair.object2);
             else //Remaining case: other has no non-null parts
                 return false;
         } else {
             //Transitive and symmetric requirements of equals will make sure
             //checking the following cases are sufficient
-            if(object1.equals(otherPair.object1))
+            if (object1.equals(otherPair.object1))
                 return object2.equals(otherPair.object2);
-            else if(object1.equals(otherPair.object2))
+            else if (object1.equals(otherPair.object2))
                 return object2.equals(otherPair.object1);
             else
                 return false;
@@ -222,11 +211,9 @@ public class Pair<T, U> implements Cloneable, java.io.Serializable {
      */
     @Override
     public int hashCode() {
-
         int hashCode = object1Null ? 0 : object1.hashCode();
         hashCode += (object2Null ? 0 : object2.hashCode());
         return hashCode;
-
     }
 
 }

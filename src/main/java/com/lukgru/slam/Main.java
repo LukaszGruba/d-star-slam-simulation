@@ -1,9 +1,7 @@
 package com.lukgru.slam;
 
 import com.lukgru.slam.dstar.DStarLite;
-import com.lukgru.slam.dstar.State;
 
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -17,7 +15,7 @@ public class Main {
         //Create pathfinder
         DStarLite pf = new DStarLite();
         //set start and goal nodes
-        pf.init(0,0,1000,1000);
+        pf.init(0, 0, 1000, 1000);
         //set impassable nodes
         for (int i = 0; i < 20000; i++) {
             pf.updateCell(r.nextInt(1000), r.nextInt(1000), -1);
