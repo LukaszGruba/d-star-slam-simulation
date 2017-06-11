@@ -6,6 +6,7 @@ package com.lukgru.slam;
 public class TargetFinder {
 
     public Position getTargetPosition(ObservedMap observedMap) {
+        //TODO: handle situation when no goal is visible -> then it should return some new goal
         MapObject target = observedMap.getObservedObjects().values().stream()
                 .filter(object -> object.getType().equals(MapObject.MapObjectType.GOAL))
                 .findFirst()

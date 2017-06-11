@@ -23,8 +23,8 @@ public class Robot {
 
         Position currentTarget = targetFinder.getTargetPosition(observedMap);
         while (isAtTarget(position, currentTarget)) {
-            Collection<MapObject> mapObjects = scanner.scan(world);
-            observedMap.update(mapObjects);
+            Collection<MapObject> currentlyVisibleObjects = scanner.scan(position, world);
+            observedMap.update(currentlyVisibleObjects);
             currentTarget = targetFinder.getTargetPosition(observedMap);
             List<Position> route = routePlanner.planRoute(position, currentTarget, observedMap);
             Position nextPosition = route.remove(0);
