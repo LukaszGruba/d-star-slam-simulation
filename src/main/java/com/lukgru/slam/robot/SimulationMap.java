@@ -24,6 +24,11 @@ public class SimulationMap {
         return objects;
     }
 
+    public void addObject(MapObject mapObject) {
+        objects.add(mapObject);
+        objectsByPosition.put(mapObject.getPosition(), mapObject);
+    }
+
     public Optional<MapObject> getAt(Position position) {
         return Optional.ofNullable(objectsByPosition.get(position));
     }

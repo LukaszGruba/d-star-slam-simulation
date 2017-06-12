@@ -11,23 +11,28 @@ public class Robot {
     private final WorldScanner scanner;
     private final TargetFinder targetFinder;
 
-    public Robot(RoutePlanner routePlanner, WorldScanner scanner, TargetFinder targetFinder) {
-        this.routePlanner = routePlanner;
-        this.scanner = scanner;
-        this.targetFinder = targetFinder;
+    private final Position initialPosition;
+
+    public Robot(Position initialPosition) {
+        this.routePlanner = new RoutePlanner();
+        this.scanner = new WorldScanner();
+        this.targetFinder = new TargetFinder();
+
+        this.initialPosition = initialPosition;
     }
 
     public void start(final SimulationMap world) {
         ObservedMap observedMap = new ObservedMap();
-        Position position = new Position(0, 0);
+        Position position = initialPosition;
 
-        Position currentTarget = targetFinder.getTargetPosition(observedMap);
-        while (isAtTarget(position, currentTarget)) {
+        Position currentTarget = null;
+        while (!isAtTarget(position, currentTarget)) {
+            System.out.println(position);
             Collection<MapObject> currentlyVisibleObstacles = scanner.scan(position, world);
             observedMap.update(currentlyVisibleObstacles);
             currentTarget = targetFinder.getTargetPosition(observedMap);
             List<Position> route = routePlanner.planRoute(position, currentTarget, observedMap);
-            Position nextPosition = route.remove(0);
+            Position nextPosition = route.get(1);
 
             //moveToNextPosition
             position = nextPosition;
