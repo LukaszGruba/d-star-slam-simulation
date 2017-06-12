@@ -1,12 +1,18 @@
 package com.lukgru.slam.gui;
 
+import com.lukgru.slam.robot.MapObject;
+import com.lukgru.slam.robot.ObservedMap;
 import com.lukgru.slam.robot.Position;
 import com.lukgru.slam.robot.Simulation;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -21,7 +27,11 @@ import static com.lukgru.slam.gui.Utils.fromPixels;
 public class Main {
 
     @FXML
+    public AnchorPane ap;
+    @FXML
     public Canvas worldCanvas;
+    @FXML
+    public Canvas observedCanvas;
     @FXML
     public Button startButton;
     @FXML
@@ -106,6 +116,12 @@ public class Main {
     @FXML
     public void startSimulation() {
         simulation.start();
+
+        ap.getScene().addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+            if (event.getCode().equals(KeyCode.RIGHT)) {
+                nextStep();
+            }
+        });
     }
 
     @FXML
@@ -118,6 +134,7 @@ public class Main {
         Position p = simulation.nextStep();
         List<Position> currentRoute = simulation.getCurrentRoute();
 
+        drawObservedMap(simulation.getObservedMap());
         drawRoute(currentRoute);
 
         GraphicsContext gc = worldCanvas.getGraphicsContext2D();
@@ -125,8 +142,19 @@ public class Main {
         gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2);
     }
 
+    private void drawObservedMap(ObservedMap observedMap) {
+        GraphicsContext gc = observedCanvas.getGraphicsContext2D();
+        gc.clearRect(0, 0, observedCanvas.getWidth(), observedCanvas.getHeight());
+        gc.setFill(Color.GREEN);
+        observedMap.getObservedObjects()
+                .values()
+                .stream()
+                .map(MapObject::getPosition)
+                .forEach(p -> gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2));
+    }
+
     private void drawRoute(List<Position> currentRoute) {
-        GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+        GraphicsContext gc = observedCanvas.getGraphicsContext2D();
         gc.setFill(Color.GREY);
         currentRoute.forEach(p -> gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2));
     }

@@ -75,6 +75,10 @@ public class Robot {
         return route;
     }
 
+    public ObservedMap getObservedMap() {
+        return observedMap;
+    }
+
     private Position targetCheat(SimulationMap world) {
         return world.getObjects().stream().filter(o -> o.getType().equals(MapObject.MapObjectType.GOAL)).findFirst().orElseThrow(() -> new IllegalStateException("no goal found")).getPosition();
     }

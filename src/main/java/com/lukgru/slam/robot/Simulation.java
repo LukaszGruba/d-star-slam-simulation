@@ -23,6 +23,10 @@ public class Simulation {
         return robot.getRoute();
     }
 
+    public ObservedMap getObservedMap() {
+        return robot.getObservedMap();
+    }
+
     public void addObstacle(int x, int y) {
         MapObject obstacle = new MapObject(new Position(x, y), MapObject.MapObjectType.OBSTACLE);
         simulationMap.addObject(obstacle);
