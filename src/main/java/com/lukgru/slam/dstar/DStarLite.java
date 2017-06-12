@@ -513,7 +513,7 @@ public class DStarLite implements java.io.Serializable {
         //cur = openHash.find(u);
         csum = keyHashCode(u);
 
-        // return if cell is already in list. TODO: this should be
+        // return if cell is already in list. this should be
         // uncommented except it introduces a bug, I suspect that there is a
         // bug somewhere else and having duplicates in the openList queue
         // hides the problem...

@@ -10,8 +10,8 @@ public class Simulation {
         RoutePlanner routePlanner = new RoutePlanner();
         WorldScanner scanner = new WorldScanner();
         TargetFinder targetFinder = new TargetFinder();
-        Robot robot = new Robot(simulationMap, routePlanner, scanner, targetFinder);
-        robot.start();
+        Robot robot = new Robot(routePlanner, scanner, targetFinder);
+        robot.start(simulationMap);
     }
 
     private SimulationMap createMap() {
