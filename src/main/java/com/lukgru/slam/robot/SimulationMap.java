@@ -1,4 +1,4 @@
-package com.lukgru.slam;
+package com.lukgru.slam.robot;
 
 import io.vavr.Tuple2;
 import io.vavr.collection.Stream;
@@ -22,6 +22,11 @@ public class SimulationMap {
 
     public Set<MapObject> getObjects() {
         return objects;
+    }
+
+    public void addObject(MapObject mapObject) {
+        objects.add(mapObject);
+        objectsByPosition.put(mapObject.getPosition(), mapObject);
     }
 
     public Optional<MapObject> getAt(Position position) {

@@ -1,6 +1,10 @@
 package com.lukgru.slam;
 
 
+import com.lukgru.slam.robot.MapObject;
+import com.lukgru.slam.robot.Position;
+import com.lukgru.slam.robot.SimulationMap;
+import com.lukgru.slam.robot.WorldScanner;
 import org.junit.Before;
 import org.junit.Test;
 
