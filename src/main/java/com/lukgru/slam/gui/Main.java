@@ -49,7 +49,7 @@ public class Main {
         Position position = fromPixels(me.getX(), me.getY());
         if (canvasMode == ADD_ROBOT) {
             addRobot(position);
-        } else if (canvasMode == ADD_OBSTACLE){
+        } else if (canvasMode == ADD_OBSTACLE) {
             addObstacle(position);
         } else if (canvasMode == ADD_GOAL) {
             addGoal(position);
@@ -111,5 +111,23 @@ public class Main {
     @FXML
     public void addGoal() {
         this.canvasMode = ADD_GOAL;
+    }
+
+    @FXML
+    public void nextStep() {
+        Position p = simulation.nextStep();
+        List<Position> currentRoute = simulation.getCurrentRoute();
+
+        drawRoute(currentRoute);
+
+        GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+        gc.setFill(Color.BLACK);
+        gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2);
+    }
+
+    private void drawRoute(List<Position> currentRoute) {
+        GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+        gc.setFill(Color.GREY);
+        currentRoute.forEach(p -> gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2));
     }
 }

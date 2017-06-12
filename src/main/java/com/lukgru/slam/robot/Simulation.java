@@ -1,6 +1,7 @@
 package com.lukgru.slam.robot;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by Łukasz on 2017-06-10.
@@ -11,7 +12,15 @@ public class Simulation {
     private Robot robot;
 
     public void start() {
-        robot.start(simulationMap);
+        robot.init(simulationMap);
+    }
+
+    public Position nextStep() {
+        return robot.nextStep();
+    }
+
+    public List<Position> getCurrentRoute() {
+        return robot.getRoute();
     }
 
     public void addObstacle(int x, int y) {

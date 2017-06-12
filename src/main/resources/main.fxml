@@ -33,10 +33,13 @@
                     <Button fx:id="startButton" disable="false" mnemonicParsing="false" text="Start"
                             GridPane.columnIndex="0" GridPane.rowIndex="0"
                             onMouseClicked="#startSimulation"/>
+                    <Button fx:id="nextStepButton" disable="false" mnemonicParsing="false" text="Next Step"
+                            GridPane.columnIndex="1" GridPane.rowIndex="0"
+                            onMouseClicked="#nextStep"/>
                     <Button fx:id="stopButton" disable="true" mnemonicParsing="false" text="Stop"
-                            GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            GridPane.columnIndex="2" GridPane.rowIndex="0"/>
                     <Button fx:id="resetButton" mnemonicParsing="false" text="Reset"
-                            GridPane.columnIndex="2" GridPane.rowIndex="0"
+                            GridPane.columnIndex="3" GridPane.rowIndex="0"
                             onMouseClicked="#resetSimulation"/>
                 </GridPane>
             </children>
