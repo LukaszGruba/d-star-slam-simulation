@@ -1,17 +1,23 @@
 package com.lukgru.slam;
 
+import java.util.Optional;
+
 /**
  * Created by Łukasz on 2017-06-10.
  */
 public class TargetFinder {
 
     public Position getTargetPosition(ObservedMap observedMap) {
-        //TODO: handle situation when no goal is visible -> then it should return some new goal
-        MapObject target = observedMap.getObservedObjects().values().stream()
+        MapObject goal = observedMap.getObservedObjects().values().stream()
                 .filter(object -> object.getType().equals(MapObject.MapObjectType.GOAL))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("No goal defined."));
-        return target.getPosition();
+                .orElse(temporaryGoal().orElseThrow(() -> new IllegalStateException("No goal found.")));
+        return goal.getPosition();
+    }
+
+    private Optional<MapObject> temporaryGoal() {
+        //TODO: handle situation when no goal is visible -> then it should return some new goal
+        return Optional.empty();
     }
 
 }
