@@ -42,6 +42,7 @@ public class Simulation {
 
     public void addGoal(Position position) {
         MapObject obstacle = new MapObject(position, MapObject.MapObjectType.GOAL);
+        simulationMap.getObjects().removeIf(o -> o.getType().equals(MapObject.MapObjectType.GOAL));
         simulationMap.addObject(obstacle);
     }
 }
