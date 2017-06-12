@@ -1,4 +1,4 @@
-package com.lukgru.slam;
+package com.lukgru.slam.robot;
 
 /**
  * Created by Łukasz on 2017-06-10.

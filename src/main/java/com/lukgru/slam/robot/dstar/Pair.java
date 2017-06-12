@@ -1,4 +1,4 @@
-package com.lukgru.slam.dstar;
+package com.lukgru.slam.robot.dstar;
 
 /**
  * The class <code>Pair</code> models a container for two objects wherein the

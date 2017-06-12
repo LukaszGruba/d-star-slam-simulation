@@ -1,7 +1,7 @@
-package com.lukgru.slam;
+package com.lukgru.slam.robot;
 
-import com.lukgru.slam.dstar.DStarLite;
-import com.lukgru.slam.dstar.State;
+import com.lukgru.slam.robot.dstar.DStarLite;
+import com.lukgru.slam.robot.dstar.State;
 
 import java.util.List;
 import java.util.stream.Collectors;

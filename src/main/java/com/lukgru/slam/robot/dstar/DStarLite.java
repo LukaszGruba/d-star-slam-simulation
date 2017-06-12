@@ -1,4 +1,4 @@
-package com.lukgru.slam.dstar;
+package com.lukgru.slam.robot.dstar;
 
 import java.util.*;
 

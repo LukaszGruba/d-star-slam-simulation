@@ -1,4 +1,4 @@
-package com.lukgru.slam;
+package com.lukgru.slam.robot;
 
 import java.util.Collection;
 import java.util.List;

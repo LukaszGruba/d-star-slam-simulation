@@ -1,4 +1,4 @@
-package com.lukgru.slam;
+package com.lukgru.slam.robot;
 
 import io.vavr.Tuple2;
 import io.vavr.collection.Stream;
