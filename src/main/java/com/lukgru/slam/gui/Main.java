@@ -93,6 +93,7 @@ public class Main {
     @FXML
     public void resetSimulation() {
         worldCanvas.getGraphicsContext2D().clearRect(0, 0, worldCanvas.getWidth(), worldCanvas.getHeight());
+        observedCanvas.getGraphicsContext2D().clearRect(0, 0, observedCanvas.getWidth(), observedCanvas.getHeight());
         this.simulation = new Simulation();
         initialize();
     }
@@ -117,7 +118,7 @@ public class Main {
     public void startSimulation() {
         simulation.start();
 
-        ap.getScene().addEventHandler(KeyEvent.KEY_RELEASED, event -> {
+        ap.getScene().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().equals(KeyCode.RIGHT)) {
                 nextStep();
             }
