@@ -11,7 +11,7 @@ public class TargetFinder {
         MapObject goal = observedMap.getObservedObjects().values().stream()
                 .filter(object -> object.getType().equals(MapObject.MapObjectType.GOAL))
                 .findFirst()
-                .orElse(temporaryGoal().orElseThrow(() -> new IllegalStateException("No goal found.")));
+                .orElseGet(() -> temporaryGoal().orElseThrow(() -> new IllegalStateException("No goal found.")));
         return goal.getPosition();
     }
 
