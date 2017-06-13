@@ -27,6 +27,10 @@ public class Robot {
         this.position = initialPosition;
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
 //    public void start(final SimulationMap world) {
 //        ObservedMap observedMap = new ObservedMap();
 //        Position position = initialPosition;

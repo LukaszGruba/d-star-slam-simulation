@@ -24,17 +24,17 @@
                 <Canvas fx:id="observedCanvas" height="700.0" width="700.0"
                         GridPane.columnIndex="1" GridPane.rowIndex="0"/>
                 <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1">
-                    <Button fx:id="addRobotButton" mnemonicParsing="false" text="Add Robot"
+                    <Button fx:id="addRobotButton" mnemonicParsing="false" text="Set Robot"
                             GridPane.columnIndex="0" GridPane.rowIndex="0"
                             onMouseClicked="#addRobot"/>
-                    <Button fx:id="addGoalButton" mnemonicParsing="false" text="Add Goal"
+                    <Button fx:id="addGoalButton" mnemonicParsing="false" text="Set Goal"
                             GridPane.columnIndex="1" GridPane.rowIndex="0"
                             onMouseClicked="#addGoal"/>
                 </GridPane>
                 <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <Button fx:id="startButton" disable="false" mnemonicParsing="false" text="Start"
                             GridPane.columnIndex="0" GridPane.rowIndex="0"
-                            onMouseClicked="#startSimulation"/>
+                            onMouseClicked="#playSimulation"/>
                     <Button fx:id="nextStepButton" disable="false" mnemonicParsing="false" text="Next Step"
                             GridPane.columnIndex="1" GridPane.rowIndex="0"
                             onMouseClicked="#nextStep"/>

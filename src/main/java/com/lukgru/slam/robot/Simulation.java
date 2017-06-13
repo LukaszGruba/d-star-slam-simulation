@@ -2,6 +2,7 @@ package com.lukgru.slam.robot;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Łukasz on 2017-06-10.
@@ -19,8 +20,16 @@ public class Simulation {
         return robot.nextStep();
     }
 
+    public Optional<Robot> getRobot() {
+        return Optional.ofNullable(robot);
+    }
+
     public List<Position> getCurrentRoute() {
         return robot.getRoute();
+    }
+
+    public SimulationMap getSimulationMap() {
+        return simulationMap;
     }
 
     public ObservedMap getObservedMap() {
