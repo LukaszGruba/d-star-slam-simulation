@@ -10,10 +10,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineJoin;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static com.lukgru.slam.gui.CanvasMode.*;
 import static com.lukgru.slam.gui.Utils.fromPixels;
@@ -109,13 +109,18 @@ public class Main {
         simulation.getSimulationMap().getObjects().forEach(o -> {
             if (o.getType().equals(MapObject.MapObjectType.OBSTACLE)) {
                 drawObstacleOnCanvas(o.getPosition());
-            }
-            else if (o.getType().equals(MapObject.MapObjectType.GOAL)) {
-                drawObject(Color.RED, o.getPosition().getX() * 7, o.getPosition().getY() * 7);
+            } else if (o.getType().equals(MapObject.MapObjectType.GOAL)) {
+                GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+                gc.setFill(Color.RED);
+                gc.fillOval(o.getPosition().getX() * 7, o.getPosition().getY() * 7, 7, 7);
             }
         });
         simulation.getRobot().map(Robot::getPosition)
-                .ifPresent(p -> drawObject(Color.BLUE, p.getX() * 7, p.getY() * 7));
+                .ifPresent(p -> {
+                    GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+                    gc.setFill(Color.BLUE);
+                    gc.fillOval(p.getX() * 7, p.getY() * 7, 7, 7);
+                });
     }
 
     private void drawObstacleOnCanvas(Position p) {
@@ -171,7 +176,22 @@ public class Main {
 
     private void drawRoute(List<Position> currentRoute) {
         GraphicsContext gc = observedCanvas.getGraphicsContext2D();
-        gc.setFill(Color.GREY);
-        currentRoute.forEach(p -> gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2));
+        gc.beginPath();
+        gc.setStroke(Color.ORANGE);
+        gc.setLineWidth(3.0);
+        gc.setLineJoin(StrokeLineJoin.ROUND);
+        currentRoute.stream()
+                .skip(1)
+                .forEach(p -> {
+                    int x = p.getX() * 7;
+                    int y = p.getY() * 7;
+                    gc.lineTo(x, y);
+                });
+        gc.stroke();
+        gc.closePath();
+    }
+
+    public void playSimulation(MouseEvent mouseEvent) {
+
     }
 }
