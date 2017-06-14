@@ -14,9 +14,11 @@ public class ObservedMap {
 
     private Map<Position, MapObject> observedObjects = new HashMap<>();
 
-    public void update(Collection<MapObject> objects) {
+    public boolean update(Collection<MapObject> objects) {
         Map<Position, MapObject> map = Stream.ofAll(objects).toJavaMap(o -> new Tuple2<>(o.getPosition(), o));
+        boolean addedNew = map.keySet().stream().anyMatch(key -> !observedObjects.containsKey(key));
         observedObjects.putAll(map);
+        return addedNew;
     }
 
     public Map<Position, MapObject> getObservedObjects() {

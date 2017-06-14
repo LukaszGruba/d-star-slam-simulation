@@ -11,8 +11,13 @@ import java.util.stream.Collectors;
  */
 public class RoutePlanner {
 
+    private DStarLite dStar;
+
+    public RoutePlanner() {
+        dStar = new DStarLite();
+    }
+
     public List<Position> planRoute(Position position, Position target, ObservedMap map) {
-        DStarLite dStar = new DStarLite();
         dStar.init(position.getX(), position.getY(), target.getX(), target.getY());
         map.getObservedObjects().values().stream()
                 .filter(object -> object.getType().equals(MapObject.MapObjectType.OBSTACLE))

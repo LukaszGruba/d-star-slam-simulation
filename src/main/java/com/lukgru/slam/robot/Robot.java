@@ -27,6 +27,10 @@ public class Robot {
         this.position = initialPosition;
     }
 
+    public Position getPosition() {
+        return position;
+    }
+
 //    public void start(final SimulationMap world) {
 //        ObservedMap observedMap = new ObservedMap();
 //        Position position = initialPosition;
@@ -56,15 +60,18 @@ public class Robot {
     public Position nextStep() {
         System.out.println(position);
         Collection<MapObject> currentlyVisibleObstacles = scanner.scan(position, world);
-        observedMap.update(currentlyVisibleObstacles);
+        boolean addedNew = observedMap.update(currentlyVisibleObstacles);
 //            currentTarget = targetFinder.getTargetPosition(observedMap);
-        currentTarget = targetCheat(world);
-        route = routePlanner.planRoute(position, currentTarget, observedMap);
-        Position nextPosition = route.get(1);
+        Position newTarget = targetCheat(world);
+        if (addedNew || !currentTarget.equals(newTarget)) {
+            currentTarget = newTarget;
+            route = routePlanner.planRoute(this.position, currentTarget, observedMap);
+        }
+        Position nextPosition = route.remove(1);
 
         //moveToNextPosition
-        position = nextPosition;
-        return isAtTarget(position, currentTarget) ? null : position;
+        this.position = nextPosition;
+        return isAtTarget(this.position, currentTarget) ? null : this.position;
     }
 
     private boolean isAtTarget(Position position, Position currentTarget) {

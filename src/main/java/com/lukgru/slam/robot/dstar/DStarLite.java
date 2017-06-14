@@ -39,7 +39,7 @@ public class DStarLite implements java.io.Serializable {
 
     //Default constructor
     public DStarLite() {
-        maxSteps = 80000;
+        maxSteps = 800000;
         C1 = 1;
     }
 

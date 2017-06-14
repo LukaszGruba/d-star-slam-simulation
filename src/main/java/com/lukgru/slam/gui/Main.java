@@ -1,11 +1,7 @@
 package com.lukgru.slam.gui;
 
-import com.lukgru.slam.robot.MapObject;
-import com.lukgru.slam.robot.ObservedMap;
-import com.lukgru.slam.robot.Position;
-import com.lukgru.slam.robot.Simulation;
+import com.lukgru.slam.robot.*;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -14,6 +10,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeLineJoin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +38,7 @@ public class Main {
 
     private Simulation simulation = new Simulation();
     private CanvasMode canvasMode = ADD_OBSTACLE;
+    private boolean simulationStarted = false;
 
     @FXML
     public void initialize() {
@@ -69,25 +67,28 @@ public class Main {
     private void addGoal(Position p) {
         simulation.addGoal(p);
         this.canvasMode = ADD_OBSTACLE;
+        redrawWorld();
+    }
 
+    private void drawObject(Color color, int x, int y) {
         GraphicsContext gc = worldCanvas.getGraphicsContext2D();
-        gc.setFill(Color.RED);
-        gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2);
+        gc.setFill(color);
+        gc.fillRoundRect(x, y, 7, 7, 2, 2);
     }
 
     private void addRobot(Position p) {
         simulation.addRobot(p);
+        simulation.getRobot().ifPresent(r -> r.init(simulation.getSimulationMap()));
         this.canvasMode = ADD_OBSTACLE;
-
-        GraphicsContext gc = worldCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2);
+        redrawWorld();
     }
 
     @FXML
     public void worldCanvasDraw(MouseEvent me) {
-        Position position = fromPixels(me.getX(), me.getY());
-        addObstacle(position);
+        if (canvasMode == ADD_OBSTACLE) {
+            Position position = fromPixels(me.getX(), me.getY());
+            addObstacle(position);
+        }
     }
 
     @FXML
@@ -99,14 +100,31 @@ public class Main {
     }
 
     private void addObstacle(Position position) {
-        drawObstacleOnCanvas(position);
         simulation.addObstacle(position);
+        redrawWorld();
+    }
+
+    private void redrawWorld() {
+        worldCanvas.getGraphicsContext2D().clearRect(0, 0, worldCanvas.getWidth(), worldCanvas.getHeight());
+        simulation.getSimulationMap().getObjects().forEach(o -> {
+            if (o.getType().equals(MapObject.MapObjectType.OBSTACLE)) {
+                drawObstacleOnCanvas(o.getPosition());
+            } else if (o.getType().equals(MapObject.MapObjectType.GOAL)) {
+                GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+                gc.setFill(Color.RED);
+                gc.fillOval(o.getPosition().getX() * 7, o.getPosition().getY() * 7, 7, 7);
+            }
+        });
+        simulation.getRobot().map(Robot::getPosition)
+                .ifPresent(p -> {
+                    GraphicsContext gc = worldCanvas.getGraphicsContext2D();
+                    gc.setFill(Color.BLUE);
+                    gc.fillOval(p.getX() * 7, p.getY() * 7, 7, 7);
+                });
     }
 
     private void drawObstacleOnCanvas(Position p) {
-        GraphicsContext gc = worldCanvas.getGraphicsContext2D();
-        gc.setFill(Color.GREEN);
-        gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2);
+        drawObject(Color.GREEN, p.getX() * 7, p.getY() * 7);
     }
 
     @FXML
@@ -117,12 +135,12 @@ public class Main {
     @FXML
     public void startSimulation() {
         simulation.start();
-
         ap.getScene().addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode().equals(KeyCode.RIGHT)) {
                 nextStep();
             }
         });
+        this.simulationStarted = true;
     }
 
     @FXML
@@ -132,15 +150,17 @@ public class Main {
 
     @FXML
     public void nextStep() {
+        if (!simulationStarted) {
+            startSimulation();
+        }
         Position p = simulation.nextStep();
         List<Position> currentRoute = simulation.getCurrentRoute();
 
         drawObservedMap(simulation.getObservedMap());
         drawRoute(currentRoute);
 
-        GraphicsContext gc = worldCanvas.getGraphicsContext2D();
-        gc.setFill(Color.BLACK);
-        gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2);
+        drawObject(Color.BLACK, p.getX() * 7, p.getY() * 7);
+        redrawWorld();
     }
 
     private void drawObservedMap(ObservedMap observedMap) {
@@ -156,7 +176,22 @@ public class Main {
 
     private void drawRoute(List<Position> currentRoute) {
         GraphicsContext gc = observedCanvas.getGraphicsContext2D();
-        gc.setFill(Color.GREY);
-        currentRoute.forEach(p -> gc.fillRoundRect(p.getX() * 7, p.getY() * 7, 7, 7, 2, 2));
+        gc.beginPath();
+        gc.setStroke(Color.ORANGE);
+        gc.setLineWidth(3.0);
+        gc.setLineJoin(StrokeLineJoin.ROUND);
+        currentRoute.stream()
+                .skip(1)
+                .forEach(p -> {
+                    int x = p.getX() * 7;
+                    int y = p.getY() * 7;
+                    gc.lineTo(x, y);
+                });
+        gc.stroke();
+        gc.closePath();
+    }
+
+    public void playSimulation(MouseEvent mouseEvent) {
+
     }
 }
